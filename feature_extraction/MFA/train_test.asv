@@ -1,0 +1,44 @@
+
+actionNames = {'jumping','others','phoning','playingInstrument','reading',...
+               'ridingBike','ridingHorse','','','',''};
+dirc = ls;
+for  i = 1:size(dirc,1)
+    if strfind(dirc(i,:),'features')
+        str = dirc(i,1:end-1);
+        disp(str);
+        %load training data, eigvector, training labels
+        load(str);
+        trainingData = double(hists);
+        trainingLabels = image_class;
+        %load testing data, labels
+        testingData = load('jumping-hists.mat');
+        testingLabels = 0;
+        %change format
+        testingData = testingData * eigvector;
+        
+        t1 = 1;
+        t2 = 1;
+        n1 = 1;
+        n2 = 1;
+        %svmtrain
+        for s = 1:t1:n1
+            for c = 1:t2:n2
+                %RBF kernel
+                %model = svmtrain(Labels24,testData,'-g -c');
+                %Chi-suqare kernel
+                para = ['-t 5 -g ' num2str(s) ' -c ' num2str(c)];
+                model = svmtrain(trainingLabels,trainingData,para);
+                [predicted_label, accuracy, decision_values] = svmpredict(testingLabels, testingData, model,'-b 1');
+                if accu_max < 0
+                    accu_max = 0;
+                    s_max = s;
+                    c_max = c;
+                end
+            end
+        end
+        
+        disp(s_max,c_max,accu_max);
+        
+        
+    end
+end

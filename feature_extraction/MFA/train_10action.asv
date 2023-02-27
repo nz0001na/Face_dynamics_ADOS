@@ -1,0 +1,30 @@
+ttt1 = load('train-hists.mat');
+ttt2 = load('jumping-hists.mat');
+ttt1 =double(ttt1.hists);
+ttt2 =double(ttt2.hists);
+model = svmtrain(trainingLabels,ttt1,para);
+%[predicted_label, accuracy, prob_estimates] = svmpredict(testingLabels, testingData, model,'-b 1');
+%[predicted_label, accuracy, desc_values] = svmpredict(testingLabels, testingData, model);
+[predicted_label, accuracy, desc_values] = svmpredict(testingLabels, ttt2, model,'-b 1');
+
+
+VOCinit;
+%action name
+cls = 'jumping';
+
+% load test set ('val' for development kit)
+[imgids,objids,gt]=textread(sprintf(VOCopts.action.clsimgsetpath,cls,VOCopts.testset),'%s %d %d');
+
+% create results file
+fid=fopen(sprintf(VOCopts.action.respath,'comp9',cls),'w');
+% write result in file
+%c is 
+c=
+fprintf(fid,'%s %d %f\n',imgids{i},objids(i),c);
+fclose(fid);
+%get accuracy probility
+[recall,prec,ap]=VOCevalaction(VOCopts,'comp9',cls,true);
+
+disp(ap);
+
+

@@ -1,0 +1,16 @@
+load('train-hists.mat');
+load('train-image_class.mat');
+
+options = [];
+options.intraK = 3;
+options.interK = 3000;
+options.PCARatio = 1;
+options.ReducedDim = 40;
+options.Regu = 1;
+options.ReguAlpha = 0.15;
+
+% [eigvector, eigvalue] = MFA(nlabels', options,  Xtrain);
+[eigvector, eigvalue] = MFA(image_class, options,  double(hists) );
+hists = hists*eigvector;
+
+savefields = {'hists','image_class','e'};

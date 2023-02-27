@@ -1,0 +1,94 @@
+% Training and testing for VOC 2011 action
+%
+% Ues libsvm with chi-square kernel for training.
+% Testing result are showed as estimate probility. (-b 1)
+%
+% *This file is also used for tuning Parameters
+% *Need install vocdevkit first
+%
+%
+% v1.1
+% Yu Zhu
+% 2011.10.2
+
+actionNames = {'jumping','others','phoning','playinginstrument','reading',...
+    'ridingbike','ridinghorse','running','takingphoto','usingcomputer','walking'};
+
+%Get training data
+training_data = load('train-hists.mat');
+training_data =double(training_data.hists);
+
+%get training labels, set one action 1, all other actions -1
+load('train-image_class.mat')
+trainingLabels = image_class;
+
+
+% for each action
+for i = 3:11
+
+% for jumping only
+%for i = 1:1
+    disp(['Processing ' char(actionNames(i)) '...']);
+    %get testing data
+    %testing_data = load('jumping-hists.mat');
+    testing_data = load('other9-hists.mat');
+    testing_data = double(testing_data.hists);
+    
+    
+    %Get training labels and testing labels
+    %get training labels, set one action 1, all other actions -1
+    currentAct = i;
+    trainingLabels(find(trainingLabels~=currentAct))=-1;
+    %load testing data, labels
+    ddir = 'C:\Users\User\Desktop\MFA\VOCdevkit\VOC2011\ImageSets\Action\';
+    [act_images,act_box,testingLabels] = textread([ddir char(actionNames(currentAct)) '_val.txt'],'%s %d %d');
+    
+    
+    % # of iterations for tuning paremeters
+    iter = 0;
+    for svm_g = 0.1:0.2:100
+        for svm_c = 0.1:0.2:100
+            iter=iter+1;
+            %svm parameters
+            para = ['-t 5 -g ' num2str(svm_g) ' -c ' num2str(svm_c) ' -b 1'];
+            model = svmtrain(trainingLabels,training_data,para);
+            [predicted_label, accuracy, prob_estimates] = svmpredict(testingLabels, testing_data, model,'-b 1');
+            %save every result
+            savefields={'svm_g','svm_c','prob_estimates'};
+            save(['./prob_results/prob_est_' char(actionNames(currentAct)) '_' int2str(iter) '.mat'],savefields{:});
+        end
+    end
+    
+        addpath([cd './VOCdevkit/VOCcode']);
+    VOCinit;
+    %Action name
+    %cls = char(actionNames(currentAct));
+    cls = 'phoning';
+    % create results file
+    fid=fopen(sprintf(VOCopts.action.respath,['tuning_comp' int2str(iter)],cls),'w');
+    
+    
+     ddir = 'C:\Users\User\Desktop\MFA\VOCdevkit\VOC2011\ImageSets\Action\';
+    [act_images,act_box,testingLabels] = textread([ddir 'phoning_val.txt'],'%s %d %d');
+    imgids = act_images;
+    objids = act_box;
+    
+    %load result
+    load(['.\prob_results\prob_est_phoning_' int2str(iter) '.mat']);
+    
+    % write result in file
+    for i = 1: size(prob_estimates,1)
+        % c is estimate probility of the right label
+        c=prob_estimates(i,1);
+        fprintf(fid,'%s %d %f\n',imgids{i},objids(i),c);
+    end
+    fclose(fid);
+    %get accuracy probility
+    %[recall,prec,ap]=VOCevalaction(VOCopts,['tuning_comp' int2str(iter)],cls,true);
+    [recall,prec,ap]=VOCevalaction(VOCopts,['tuning_comp' int2str(iter)],cls,false);
+    disp(ap);
+end  
+
+
+
+ 

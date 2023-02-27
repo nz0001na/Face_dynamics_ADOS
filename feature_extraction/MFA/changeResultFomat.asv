@@ -1,0 +1,29 @@
+    %
+    %change svm result to the VOC result
+    %
+    iter = 1;
+    
+    addpath([cd './VOCdevkit/VOCcode']);
+    VOCinit;
+    %Action name
+    cls = char(actionNames(currentAct));
+    % create results file
+    fid=fopen(sprintf(VOCopts.action.respath,['tuning_comp' int2str(iter)],cls),'w');
+    imgids = act_images;
+    objids = act_box;
+    
+    %load result
+    load('./prob_resultprob_est_phoning_3665')
+    
+    % write result in file
+    for i = 1: size(prob_estimates,1)
+        % c is estimate probility of the right label
+        c=desc_values(i,1);
+        fprintf(fid,'%s %d %f\n',imgids{i},objids(i),c);
+    end
+    fclose(fid);
+    %get accuracy probility
+    [recall,prec,ap]=VOCevalaction(VOCopts,['tuning_comp' int2str(iter)],cls,true);
+    disp(ap);
+    
+    
