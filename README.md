@@ -49,7 +49,7 @@ Scene 11 to 14 mainly focus more on conversation. (11) Daily Living: Scene 11 ta
 For each activity, the interviewer gives the question, and the participants gives their response. The response of participants to each activity is inspected by the interviewers. Different scenes are designed for the analysis of different aspects of autism. This schedule can capture various information, like: Hand gesture, Face emotions, Body behavior, Speech traits, gaze, etc.
 
 
-# pipeline
+# Pipeline
 ![arch](fig/pipeline.png)
 
 Our method focuses on the analysis of facial dynamics features, such as facial appearance, expression changes. The framework contains 4 parts:
