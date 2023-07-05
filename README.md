@@ -1,6 +1,8 @@
 # Discriminative Few Shot Learning of Facial Dynamics in Interview Videos for Autism Trait Classification
 This is the implementation of paper 'Zhang, Na, et al. "Discriminative few shot learning of facial dynamics in interview videos for autism trait classification." IEEE Transactions on Affective Computing (2022).'.
 
+Stay tuned for the updating !!!
+
 # Introduction
 
 Autism Spectrum Disorder (ASD) is a prevalent neurodevelopmental disorder characterized by impairments in social and communicative behaviors. It affects people’s communication and behavior.
