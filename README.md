@@ -67,6 +67,7 @@ Our method focuses on the analysis of facial dynamics features, such as facial a
 First, face frames are extracted from the video by detection and cropping. Second, spatial-temporal facial feature is extracted from each 2-second long frames subvolume. Third, Sparse coding and dimension reduction is used to learn a discriminative feature. Last, the final representation is fed to a few-shot learning module for classification.
 
 # Content
+
 This repository contains the implementation of:
 * video pre-processing
 * spatio-temporal feature extraction
