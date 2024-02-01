@@ -20,7 +20,7 @@ we have constructed a three-category system to classify an individual with Autis
 ### Link: 
 [[PDF]](https://ieeexplore.ieee.org/abstract/document/9785700)
 
-# Data
+# Database
 
 ADOS means Autism Diagnostic Observation Schedule.
 
