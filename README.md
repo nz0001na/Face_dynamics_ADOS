@@ -18,7 +18,7 @@ In this work, we developed a discriminative few shot learning method to analyze 
 we have constructed a three-category system to classify an individual with Autism into three different severity levels, i.e. Autism, Autism Spectrum, and Non-Spectrum.
 
 ### Link: 
-[[PDF]](https://ieeexplore.ieee.org/abstract/document/9785700)
+[[Paper]](https://ieeexplore.ieee.org/abstract/document/9785700)
 
 # Database
 
